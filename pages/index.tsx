@@ -116,9 +116,9 @@ export default function Home() {
                     ))}
                 </Box>
               )}
-              {err.length > 0 && (
+              {!!err && (
                 <Box>
-                  <pre>{err}</pre>
+                  <pre>{JSON.stringify(err, null, 2)}</pre>
                 </Box>
               )}
             </Box>
