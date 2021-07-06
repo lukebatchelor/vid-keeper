@@ -51,14 +51,19 @@ export default function Home() {
     e.preventDefault();
     setLoading(true);
 
-    fetch('/api/download', { method: 'POST', body: JSON.stringify({ videoUrl }) })
-      .then((r) => r.json())
-      .then((res) => {
-        const options: Array<DownloadOption> = res.options;
-        setOptions(options);
-        setTitle(res.title);
-        setLoading(false);
-      });
+    try {
+      fetch('/api/download', { method: 'POST', body: JSON.stringify({ videoUrl }) })
+        .then((r) => r.json())
+        .then((res) => {
+          const options: Array<DownloadOption> = res.options;
+          setOptions(options);
+          setTitle(res.title);
+          setLoading(false);
+        });
+    } catch (e) {
+      console.error(e);
+      setLoading(false);
+    }
   };
   return (
     <NoSsr>
@@ -103,7 +108,7 @@ export default function Home() {
                     .map((o) => (
                       <Box key={o.url} mt={2}>
                         <a href={o.url}>
-                          {prettyBytes(o.filesize)} | {o.format}
+                          {o.filesize ? prettyBytes(o.filesize) : '? Mb'} | {o.format}
                         </a>
                       </Box>
                     ))}
