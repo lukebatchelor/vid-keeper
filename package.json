@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "release:cut": "yarn version --no-git-tag-version --patch",
-    "release:pull": "curl \"https://github.com/lukebatchelor/vid-keeper/releases/download/v$npm_package_version/release.tgz\" -sL -o release.tgz; tar -zxvf release.tgz --strip-components=1 package",
+    "release:create": "tar -cvzf release.tgz ./.next",
+    "release:pull": "curl \"https://github.com/lukebatchelor/vid-keeper/releases/download/v$npm_package_version/release.tgz\" -sL -o release.tgz; tar -zxvf release.tgz",
     "postrelease:cut": "git commit -am \"New release: $npm_package_version\""
   },
   "dependencies": {
