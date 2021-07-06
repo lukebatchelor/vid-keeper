@@ -45,6 +45,7 @@ export default function Home() {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [options, setOptions] = React.useState<Array<DownloadOption>>([]);
   const [title, setTitle] = React.useState<string>('');
+  const [err, setErr] = React.useState<string>('');
 
   const onVideoUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => setVideoUrl(e.target.value);
   const onSubmit = (e: React.FormEvent) => {
@@ -63,6 +64,7 @@ export default function Home() {
     } catch (e) {
       console.error(e);
       setLoading(false);
+      setErr(e);
     }
   };
   return (
@@ -112,6 +114,11 @@ export default function Home() {
                         </a>
                       </Box>
                     ))}
+                </Box>
+              )}
+              {err.length > 0 && (
+                <Box>
+                  <pre>{err}</pre>
                 </Box>
               )}
             </Box>
