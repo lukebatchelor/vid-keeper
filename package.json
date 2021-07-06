@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "release:cut": "yarn version --no-git-tag-version --patch",
-    "release:pull": "curl \"https://github.com/lukebatchelor/vid-keeper/releases/download/v$npm_package_version/release.tgz\" -sL -o release.tgz; tar -zxvf release.tgz --strip-components=1 package/dist",
+    "release:pull": "curl \"https://github.com/lukebatchelor/vid-keeper/releases/download/v$npm_package_version/release.tgz\" -sL -o release.tgz; tar -zxvf release.tgz --strip-components=1 package",
     "postrelease:cut": "git commit -am \"New release: $npm_package_version\""
   },
   "dependencies": {
@@ -20,6 +20,9 @@
     "react-dom": "17.0.2",
     "youtube-dl-exec": "^1.2.4"
   },
+  "files": [
+    ".next"
+  ],
   "devDependencies": {
     "@types/react": "^17.0.13",
     "eslint": "7.30.0",
