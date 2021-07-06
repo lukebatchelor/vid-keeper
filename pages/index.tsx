@@ -57,8 +57,14 @@ export default function Home() {
         .then((r) => r.json())
         .then((res) => {
           const options: Array<DownloadOption> = res.options;
-          setOptions(options);
-          setTitle(res.title);
+          const error: string = res.error;
+          const title: string = res.title;
+          if (options && title) {
+            setOptions(options);
+            setTitle(res.title);
+          } else {
+            setErr(error);
+          }
           setLoading(false);
         });
     } catch (e) {
