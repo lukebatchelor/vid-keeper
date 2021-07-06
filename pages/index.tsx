@@ -68,7 +68,7 @@ export default function Home() {
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <VideoLibraryIcon />
             </IconButton>
-            <Typography variant="h6">Keep Vid</Typography>
+            <Typography variant="h6">Vid Keeper</Typography>
           </Toolbar>
         </AppBar>
         <Box pt={12} />

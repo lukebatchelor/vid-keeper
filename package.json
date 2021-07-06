@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "release:cut": "yarn version --no-git-tag-version --patch",
+    "release:pull": "curl \"https://github.com/lukebatchelor/vid-keeper/releases/download/v$npm_package_version/release.tgz\" -sL -o release.tgz; tar -zxvf release.tgz --strip-components=1 package/dist",
+    "postrelease:cut": "git commit -am \"New release: $npm_package_version\""
   },
   "dependencies": {
     "@material-ui/core": "^4.11.4",
