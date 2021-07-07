@@ -1,6 +1,6 @@
 {
   "name": "keep-vid",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,7 +10,8 @@
     "release:cut": "yarn version --no-git-tag-version --patch",
     "release:create": "tar -cvzf release.tgz ./.next",
     "release:pull": "curl \"https://github.com/lukebatchelor/vid-keeper/releases/download/v$npm_package_version/release.tgz\" -sL -o release.tgz; tar -zxvf release.tgz",
-    "postrelease:cut": "git commit -am \"New release: $npm_package_version\""
+    "postrelease:cut": "git commit -am \"New release: $npm_package_version\"",
+    "release:wait": "until $(curl --output /dev/null --silent --head --fail https://github.com/lukebatchelor/vid-keeper/releases/download/v$npm_package_version/release.tgz); do printf '.'; sleep 5 done"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.4",
