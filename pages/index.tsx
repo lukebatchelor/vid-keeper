@@ -77,6 +77,13 @@ export default function Home() {
     <NoSsr>
       <Head>
         <title>Vid Keeper</title>
+        <meta name="application-name" content="Vid Keeper" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Vid Keeper" />
+        <meta name="description" content="Best Vid Keeper in the world" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
       <Box>
         <AppBar position="fixed">
