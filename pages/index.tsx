@@ -75,6 +75,9 @@ export default function Home() {
   };
   return (
     <NoSsr>
+      <Head>
+        <title>Vid Keeper</title>
+      </Head>
       <Box>
         <AppBar position="fixed">
           <Toolbar>
