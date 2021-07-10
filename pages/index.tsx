@@ -133,7 +133,7 @@ export default function Home() {
                     <Typography>Video: {title}</Typography>
                     <Box mt={2} />
                     <TableContainer
-                      component={Paper}
+                      component={largeScreen ? Paper : Box}
                       style={{ width: largeScreen ? '80%' : '100%', alignSelf: 'center' }}
                     >
                       <Table aria-label="download links">
@@ -156,7 +156,7 @@ export default function Home() {
                               <TableCell align="right">
                                 <a href={row.url}>
                                   <Tooltip title="Right click > Save Link As...">
-                                    <GetAppIcon htmlColor="#dbd4ca" />
+                                    <GetAppIcon htmlColor="#aaa" />
                                   </Tooltip>
                                 </a>
                               </TableCell>
