@@ -1,0 +1,9 @@
+body {
+  background: url('/background.jpeg');
+}
+html,
+body,
+#__next,
+#__next > div {
+  height: 100%;
+}

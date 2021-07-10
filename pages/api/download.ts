@@ -11,14 +11,15 @@ const handler: NextApiHandler = async (req, res) => {
   const { videoUrl } = JSON.parse(req.body);
   try {
     const info = await youtubedl(videoUrl, { 'dump-json': true });
-    const options = info.formats.map(({ filesize, format, height, width, url }) => ({
+    const options = info.formats.map(({ filesize, format, height, width, url, ext }) => ({
       filesize,
-      format,
+      name: format,
+      format: ext,
       height,
       width,
       url,
     }));
-    console.log({ options });
+    console.log('Sending links for url: ', videoUrl);
     res.send({ title: info.title, options });
   } catch (e) {
     console.error(e);

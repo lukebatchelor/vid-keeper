@@ -10,11 +10,20 @@ import {
   Menu,
   MenuItem,
   NoSsr,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
   Toolbar,
+  Tooltip,
   Typography,
+  useMediaQuery,
 } from '@material-ui/core';
-import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import Head from 'next/head';
 import Image from 'next/image';
 import React, { useRef } from 'react';
@@ -26,6 +35,7 @@ type DownloadOption = {
   height: number;
   width: number;
   url: string;
+  name: string;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -46,6 +56,7 @@ export default function Home() {
   const [options, setOptions] = React.useState<Array<DownloadOption>>([]);
   const [title, setTitle] = React.useState<string>('');
   const [err, setErr] = React.useState<string>('');
+  const largeScreen = useMediaQuery('(min-width:600px)');
 
   const onVideoUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => setVideoUrl(e.target.value);
   const onSubmit = (e: React.FormEvent) => {
@@ -73,6 +84,10 @@ export default function Home() {
       setErr(e);
     }
   };
+  const onButtonClick = (e) => {
+    if (options.length === 0) return onSubmit(e);
+    setOptions([]);
+  };
   return (
     <NoSsr>
       <Head>
@@ -85,60 +100,94 @@ export default function Home() {
         <link rel="manifest" href="/manifest.json" />
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
-      <Box>
-        <AppBar position="fixed">
-          <Toolbar>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-              <VideoLibraryIcon />
-            </IconButton>
-            <Typography variant="h6">Vid Keeper</Typography>
-          </Toolbar>
-        </AppBar>
-        <Box pt={12} />
+      <Box display="flex" height="100%" flexDirection="column">
         <Container>
-          <Typography align="center">My own private video downloader!</Typography>
-          <form onSubmit={onSubmit} className={classes.form}>
-            <Box mt={4} display="flex" justifyContent="center" flexDirection="column">
-              <TextField
-                id="video-url"
-                label="Video Url"
-                placeholder="https://www.youtube.com/watch?v=y8Kyi0WNg40"
-                defaultValue=""
-                onChange={onVideoUrlChange}
-                fullWidth
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <Box mt={4} />
-              <Button type="submit" variant="contained" color="primary" disabled={loading}>
-                Download
+          <Box display="flex" flexDirection="column" mt={4} style={{}}>
+            <Typography align="center" variant="h5" gutterBottom>
+              A super simple video downloader with no ads, no tracking and no cookies.
+            </Typography>
+            <Box mt={2} />
+            <Typography variant="body1">
+              Enter the url of any page with a video below and it will try to fetch you links to be able to download
+              them
+            </Typography>
+            <form onSubmit={onSubmit} className={classes.form}>
+              <Box mt={4} display="flex" justifyContent="center" flexDirection="column">
+                <TextField
+                  id="video-url"
+                  label="Video Url"
+                  placeholder="https://www.youtube.com/watch?v=y8Kyi0WNg40"
+                  defaultValue=""
+                  onChange={onVideoUrlChange}
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <Box mt={4} />
+                <Box display="flex" justifyContent="center">
+                  {loading && <CircularProgress />}
+                </Box>
+                {!loading && options.length > 0 && (
+                  <Box mb={12} display="flex" flexDirection="column">
+                    <Typography>Video: {title}</Typography>
+                    <Box mt={2} />
+                    <TableContainer
+                      component={Paper}
+                      style={{ width: largeScreen ? '80%' : '100%', alignSelf: 'center' }}
+                    >
+                      <Table aria-label="download links">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Size</TableCell>
+                            <TableCell>Format</TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell align="right"></TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {options.map((row) => (
+                            <TableRow key={row.format}>
+                              <TableCell component="th" scope="row">
+                                {row.filesize ? prettyBytes(row.filesize) : '-'}
+                              </TableCell>
+                              <TableCell>{row.format}</TableCell>
+                              <TableCell>{row.name}</TableCell>
+                              <TableCell align="right">
+                                <a href={row.url}>
+                                  <Tooltip title="Right click > Save Link As...">
+                                    <GetAppIcon htmlColor="#dbd4ca" />
+                                  </Tooltip>
+                                </a>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </Box>
+                )}
+                {!!err && (
+                  <Box>
+                    <pre>{JSON.stringify(err, null, 2)}</pre>
+                  </Box>
+                )}
+              </Box>
+            </form>
+            <Box flexGrow={1} />
+            <Box position="fixed" bottom={24} right={0} width="100%" display="flex" justifyContent="center">
+              <Button
+                style={{ width: largeScreen ? '50%' : '80%' }}
+                variant="contained"
+                color="primary"
+                onClick={onButtonClick}
+                disabled={loading}
+              >
+                {options.length === 0 ? 'Download' : 'Clear'}
               </Button>
               <Box mt={4} />
-              <Box display="flex" justifyContent="center">
-                {loading && <CircularProgress />}
-              </Box>
-              {!loading && options.length > 0 && (
-                <Box>
-                  <Typography>{title}</Typography>
-                  {options
-                    // .sort((a, b) => a.filesize - b.filesize)
-                    .map((o) => (
-                      <Box key={o.url} mt={2}>
-                        <a href={o.url}>
-                          {o.filesize ? prettyBytes(o.filesize) : '? Mb'} | {o.format}
-                        </a>
-                      </Box>
-                    ))}
-                </Box>
-              )}
-              {!!err && (
-                <Box>
-                  <pre>{JSON.stringify(err, null, 2)}</pre>
-                </Box>
-              )}
             </Box>
-          </form>
+          </Box>
         </Container>
       </Box>
     </NoSsr>
