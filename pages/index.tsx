@@ -154,7 +154,7 @@ export default function Home() {
                               <TableCell>{row.format}</TableCell>
                               <TableCell>{row.name}</TableCell>
                               <TableCell align="right">
-                                <a href={row.url}>
+                                <a href={row.url} target="_blank" rel="noopener noreferrer">
                                   <Tooltip title="Right click > Save Link As...">
                                     <GetAppIcon htmlColor="#aaa" />
                                   </Tooltip>
