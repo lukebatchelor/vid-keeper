@@ -59,12 +59,8 @@ export default function Home() {
   const largeScreen = useMediaQuery('(min-width:600px)');
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.has('url') || params.has('text')) {
-      const url = params.get('url');
-      const text = params.get('text');
-      if (validURL(url)) setVideoUrl(url);
-      else if (validURL(text)) setVideoUrl(text);
-    }
+    if (params.has('url')) setVideoUrl(params.get('url'));
+    else if (params.has('text')) setVideoUrl(params.get('text'));
   }, []);
 
   const onVideoUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => setVideoUrl(e.target.value);
@@ -202,17 +198,4 @@ export default function Home() {
       </Box>
     </NoSsr>
   );
-}
-
-function validURL(str) {
-  var pattern = new RegExp(
-    '^(https?:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$',
-    'i'
-  ); // fragment locator
-  return !!pattern.test(str);
 }
