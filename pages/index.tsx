@@ -59,8 +59,8 @@ export default function Home() {
   const largeScreen = useMediaQuery('(min-width:600px)');
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.has('url')) setVideoUrl(params.get('url'));
-    else if (params.has('text')) setVideoUrl(params.get('text'));
+    if (params.get('url')) setVideoUrl(params.get('url'));
+    else if (params.get('text')) setVideoUrl(params.get('text'));
   }, []);
 
   const onVideoUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => setVideoUrl(e.target.value);
