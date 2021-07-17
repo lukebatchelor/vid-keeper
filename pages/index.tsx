@@ -26,7 +26,7 @@ import {
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Head from 'next/head';
 import Image from 'next/image';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import prettyBytes from 'pretty-bytes';
 
 type DownloadOption = {
@@ -51,20 +51,28 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
-  const [videoUrl, setVideoUrl] = React.useState<string>('https://www.youtube.com/watch?v=y8Kyi0WNg40');
+  const [videoUrl, setVideoUrl] = React.useState<string>('');
   const [loading, setLoading] = React.useState<boolean>(false);
   const [options, setOptions] = React.useState<Array<DownloadOption>>([]);
   const [title, setTitle] = React.useState<string>('');
   const [err, setErr] = React.useState<string>('');
   const largeScreen = useMediaQuery('(min-width:600px)');
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('url')) {
+      console.log('setting url', { url: params.get('url') });
+      setVideoUrl(params.get('url'));
+    }
+  }, []);
 
   const onVideoUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => setVideoUrl(e.target.value);
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    const url = videoUrl || 'https://www.youtube.com/watch?v=y8Kyi0WNg40';
 
     try {
-      fetch('/api/download', { method: 'POST', body: JSON.stringify({ videoUrl }) })
+      fetch('/api/download', { method: 'POST', body: JSON.stringify({ videoUrl: url }) })
         .then((r) => r.json())
         .then((res) => {
           const options: Array<DownloadOption> = res.options;
@@ -117,7 +125,7 @@ export default function Home() {
                   id="video-url"
                   label="Video Url"
                   placeholder="https://www.youtube.com/watch?v=y8Kyi0WNg40"
-                  defaultValue=""
+                  value={videoUrl}
                   onChange={onVideoUrlChange}
                   fullWidth
                   InputLabelProps={{
