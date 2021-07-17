@@ -18,7 +18,8 @@
     "action": "/",
     "method": "GET",
     "params": {
-      "url": "url"
+      "url": "url",
+      "text": "text"
     }
   },
   "theme_color": "#3f51b5",
