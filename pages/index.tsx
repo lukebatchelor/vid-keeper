@@ -59,9 +59,11 @@ export default function Home() {
   const largeScreen = useMediaQuery('(min-width:600px)');
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.has('url')) {
-      console.log('setting url', { url: params.get('url') });
-      setVideoUrl(params.get('url'));
+    if (params.has('url') || params.has('text')) {
+      const url = params.get('url');
+      const text = params.get('text');
+      if (validURL(url)) setVideoUrl(url);
+      else if (validURL(text)) setVideoUrl(text);
     }
   }, []);
 
@@ -200,4 +202,17 @@ export default function Home() {
       </Box>
     </NoSsr>
   );
+}
+
+function validURL(str) {
+  var pattern = new RegExp(
+    '^(https?:\\/\\/)?' + // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+      '(\\#[-a-z\\d_]*)?$',
+    'i'
+  ); // fragment locator
+  return !!pattern.test(str);
 }
