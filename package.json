@@ -1,6 +1,6 @@
 {
   "name": "vid-keeper",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "private": true,
   "repository": {
     "url": "https://github.com/lukebatchelor/vid-keeper"
@@ -13,7 +13,7 @@
     "release:cut": "yarn version --no-git-tag-version --patch",
     "postrelease:cut": "git commit -am \"New release: $npm_package_version\"",
     "release:create": "tar -cvzf release.tgz ./.next",
-    "release:wait": "until $(curl --output /dev/null --silent --head --fail $npm_package_repository_url/releases/download/v$npm_package_version/release.tgz); do printf '.' ; sleep 5 ; done",
+    "release:wait": "until $(curl --output /dev/null --silent --head --fail $npm_package_repository_url/releases/download/v$npm_package_version/release.tgz?none=$RANDOM); do printf '.' ; sleep 5 ; done",
     "release:pull": "curl $npm_package_repository_url/releases/download/v$npm_package_version/release.tgz -sL -o release.tgz; tar -zxvf release.tgz",
     "deploy": "yarn release:cut && git push && yarn release:wait && ssh root@lbat.ch \"source ~/.zshrc && cd /home/lbatch/sites/$npm_package_name && git pull && yarn release:pull && pm2 restart vid-keeper\""
   },
