@@ -9,6 +9,12 @@ const handler: NextApiHandler = async (req, res) => {
     });
   }
   const { videoUrl } = JSON.parse(req.body);
+  if (!videoUrl.match(/^https:\/\//)) {
+    return res.status(400).json({
+      statusCode: 400,
+      message: 'Not Valid',
+    });
+  }
   try {
     const info = await youtubedl(videoUrl, { 'dump-json': true });
     const options = info.formats.map(({ filesize, format, height, width, url, ext }) => ({
